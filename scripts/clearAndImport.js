@@ -21,8 +21,9 @@ async function clearAndImport() {
 
         // Transform and import users
         for (const user of users) {
-            // Create new user
+            // Create new user using API provided username
             const newUser = new User({
+                username: user.username,
                 email: user.email,
                 password: user.password,
                 firstName: user.firstName,
@@ -31,7 +32,7 @@ async function clearAndImport() {
             });
 
             const savedUser = await newUser.save();
-            console.log(`Imported user: ${user.firstName} ${user.lastName}`);
+            console.log(`Imported user: ${user.firstName} ${user.lastName} (${user.username})`);
 
             // Create address for user
             const address = new Address({

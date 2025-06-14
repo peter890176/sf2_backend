@@ -4,11 +4,20 @@ const { generateToken } = require('../utils/jwt.utils');
 // Register new user
 exports.register = async (req, res) => {
   try {
-    const { email, password, firstName, lastName, phone } = req.body;
+    const { username, email, password, firstName, lastName, phone } = req.body;
 
-    // Check if user exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
+    // Check if username exists
+    const existingUsername = await User.findOne({ username });
+    if (existingUsername) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'This username is already taken'
+      });
+    }
+
+    // Check if email exists
+    const existingEmail = await User.findOne({ email });
+    if (existingEmail) {
       return res.status(400).json({
         status: 'error',
         message: 'This email is already registered'
@@ -17,6 +26,7 @@ exports.register = async (req, res) => {
 
     // Create new user
     const user = await User.create({
+      username,
       email,
       password,
       firstName,
@@ -33,6 +43,7 @@ exports.register = async (req, res) => {
       data: {
         user: {
           id: user._id,
+          username: user.username,
           email: user.email,
           firstName: user.firstName,
           lastName: user.lastName,
@@ -51,22 +62,22 @@ exports.register = async (req, res) => {
 // User login
 exports.login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
-    // Check if email and password exist
-    if (!email || !password) {
+    // Check if username and password exist
+    if (!username || !password) {
       return res.status(400).json({
         status: 'error',
-        message: 'Please provide email and password'
+        message: 'Please provide username and password'
       });
     }
 
     // Find user and select password field
-    const user = await User.findOne({ email }).select('+password');
+    const user = await User.findOne({ username }).select('+password');
     if (!user || !(await user.comparePassword(password))) {
       return res.status(401).json({
         status: 'error',
-        message: 'Incorrect email or password'
+        message: 'Incorrect username or password'
       });
     }
 
@@ -83,6 +94,7 @@ exports.login = async (req, res) => {
       data: {
         user: {
           id: user._id,
+          username: user.username,
           email: user.email,
           firstName: user.firstName,
           lastName: user.lastName,
