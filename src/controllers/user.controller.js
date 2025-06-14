@@ -61,7 +61,7 @@ exports.updateProfile = async (req, res) => {
 // Get user addresses
 exports.getAddresses = async (req, res) => {
   try {
-    const addresses = await Address.find({ userId: req.user.id });
+    const addresses = await Address.find({ user: req.user.id });
     res.status(200).json({
       status: 'success',
       data: {
@@ -82,7 +82,7 @@ exports.addAddress = async (req, res) => {
     const { addressLine, city, postalCode, state, isDefault } = req.body;
     
     const address = await Address.create({
-      userId: req.user.id,
+      user: req.user.id,
       addressLine,
       city,
       postalCode,
@@ -110,7 +110,7 @@ exports.updateAddress = async (req, res) => {
     const { addressLine, city, postalCode, state, isDefault } = req.body;
     
     const address = await Address.findOneAndUpdate(
-      { _id: req.params.id, userId: req.user.id },
+      { _id: req.params.id, user: req.user.id },
       { addressLine, city, postalCode, state, isDefault },
       { new: true, runValidators: true }
     );
@@ -141,7 +141,7 @@ exports.deleteAddress = async (req, res) => {
   try {
     const address = await Address.findOneAndDelete({
       _id: req.params.id,
-      userId: req.user.id
+      user: req.user.id
     });
 
     if (!address) {
