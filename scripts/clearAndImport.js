@@ -6,10 +6,9 @@ require('dotenv').config();
 
 async function clearAndImport() {
     try {
-        // Connect to MongoDB with ecommerce database
-        const MONGODB_URI = 'mongodb://localhost:27017/ecommerce';
-        await mongoose.connect(MONGODB_URI);
-        console.log('Connected to MongoDB (ecommerce database)');
+        // Connect to MongoDB Atlas
+        await mongoose.connect(process.env.MONGODB_URI);
+        console.log('Connected to MongoDB Atlas (ecommerce database)');
 
         // Clear existing data
         await User.deleteMany({});
