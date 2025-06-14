@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 const addressSchema = new mongoose.Schema({
-  userId: {
+  user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: [true, 'User ID is required']
   },
   addressLine: {
     type: String,
@@ -38,7 +38,7 @@ const addressSchema = new mongoose.Schema({
 addressSchema.pre('save', async function(next) {
   if (this.isDefault) {
     await this.constructor.updateMany(
-      { userId: this.userId, _id: { $ne: this._id } },
+      { user: this.user, _id: { $ne: this._id } },
       { isDefault: false }
     );
   }
