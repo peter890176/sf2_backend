@@ -21,11 +21,14 @@ async function clearAndImport() {
 
         // Transform and import users
         for (const user of users) {
+            // Ensure password meets minimum length requirement (6 characters)
+            const password = user.password.length >= 6 ? user.password : user.password + '123456';
+
             // Create new user using API provided username
             const newUser = new User({
                 username: user.username,
                 email: user.email,
-                password: user.password,
+                password: password,  // Using processed password
                 firstName: user.firstName,
                 lastName: user.lastName,
                 phone: user.phone
