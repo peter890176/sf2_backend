@@ -9,6 +9,12 @@ This is a comprehensive and robust e-commerce backend API built with Node.js, Ex
 - **Live Demo:** [https://sfshop.netlify.app/](https://sfshop.netlify.app/)
 - **Frontend Repository:** [https://github.com/peter890176/sf2](https://github.com/peter890176/sf2)
 
+## Demo Data Source
+
+The sample data for this project is provided by [**DummyJSON**](https://dummyjson.com/). The import scripts use the following endpoints:
+- **Products:** [https://dummyjson.com/products](https://dummyjson.com/products)
+- **Users:** [https://dummyjson.com/users](https://dummyjson.com/users)
+
 ## Features
 
 - **Authentication**: Secure user registration and login using JWT (JSON Web Tokens).
@@ -94,10 +100,10 @@ Follow these instructions to get the project up and running on your local machin
 
 ## Utility Scripts
 
-The `scripts/` directory contains helpers for database initialization and management.
+The `scripts/` directory contains helpers for database initialization and management. These scripts populate the database using sample data from [DummyJSON](https://dummyjson.com/).
 
 1.  **Import Users & Products (Optional):**
-    To populate the database with sample data from DummyJSON:
+    To populate the database with sample data:
     ```bash
     node scripts/importUsers.js
     node scripts/importProducts.js
@@ -162,60 +168,6 @@ The API is structured into modules for authentication, users, products, and orde
 | `GET`  | `/`              | [P]  | Gets the current user's order history. |
 | `GET`  | `/:id`           | [P]  | Gets details of a specific order. |
 
-## Tech Stack
+## Acknowledgments
 
-- Node.js
-- Express.js
-- MongoDB
-- Mongoose
-- JWT
-- bcryptjs
-- express-rate-limit
-- cors
-- dotenv
-
-## Project Structure
-
-```
-src/
-├── config/         # Configuration files
-├── controllers/    # Route controllers
-├── middlewares/    # Custom middlewares
-├── models/         # Mongoose models
-├── routes/         # API routes
-├── services/       # Business logic
-├── utils/          # Utility functions
-└── app.js          # Application entry point
-```
-
-## Security Features
-
-- Password encryption using bcryptjs
-- JWT-based authentication
-- Rate limiting to prevent brute force attacks
-- CORS configuration
-- Input validation
-- Error handling middleware
-
-## Error Handling
-
-The API includes comprehensive error handling for:
-- Validation errors
-- Authentication errors
-- Database errors
-- Server errors
-
-## Rate Limiting
-
-The API implements rate limiting to prevent abuse:
-- 100 requests per 15 minutes per IP address
-
-## CORS Configuration
-
-CORS is enabled for the following origins:
-- http://localhost:3000
-- http://localhost:5173
-
-## License
-
-MIT 
+Parts of the code in this project were developed with the assistance of the Gemini 2.5 Pro AI model. All AI-generated code has been reviewed and verified by the project developer.
