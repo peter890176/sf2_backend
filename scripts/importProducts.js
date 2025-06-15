@@ -15,11 +15,17 @@ async function importProducts() {
         const products = response.data.products;
 
         const productDocs = products.map(p => ({
-            name: p.title,
+            title: p.title,
             description: p.description,
             price: p.price,
             imageUrl: p.thumbnail,
             stock: p.stock,
+            brand: p.brand,
+            images: p.images,
+            rating: p.rating,
+            discountPercentage: p.discountPercentage,
+            category: p.category,
+            dummyId: p.id.toString(),
         }));
 
         await Product.insertMany(productDocs);

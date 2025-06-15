@@ -71,7 +71,7 @@ exports.createOrder = async (req, res) => {
 
       items.push({
         product: product._id,
-        name: product.name,
+        name: product.title,
         quantity: item.quantity,
         price: product.price,
         imageUrl: product.imageUrl,

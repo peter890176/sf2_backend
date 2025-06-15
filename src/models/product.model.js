@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema({
-  name: {
+  title: {
     type: String,
-    required: [true, 'Product name is required'],
+    required: [true, 'Product title is required'],
     trim: true,
   },
   description: {
@@ -25,6 +25,33 @@ const productSchema = new mongoose.Schema({
     required: [true, 'Stock quantity is required'],
     min: [0, 'Stock must be a positive number'],
     default: 0,
+  },
+  brand: {
+    type: String,
+    default: 'Unknown Brand',
+  },
+  images: {
+    type: [String],
+    required: true,
+  },
+  rating: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  discountPercentage: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  category: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  dummyId: {
+    type: String,
+    required: [true, 'Dummy ID is required'],
   },
 }, {
   timestamps: true,
