@@ -47,8 +47,13 @@ exports.getOrderById = async (req, res) => {
 // @access  Private
 exports.createOrder = async (req, res) => {
   const { orderItems, shippingAddress } = req.body;
+  
+  console.log('--- Creating New Order ---');
+  console.log('Received orderItems:', JSON.stringify(orderItems, null, 2));
+  console.log('Received shippingAddress:', JSON.stringify(shippingAddress, null, 2));
 
   if (!orderItems || orderItems.length === 0) {
+    console.log('Validation failed: No order items.');
     return res.status(400).json({ status: 'error', message: 'No order items' });
   }
 
@@ -57,17 +62,24 @@ exports.createOrder = async (req, res) => {
     const items = [];
 
     for (const item of orderItems) {
+      console.log(`Processing item with productId: ${item.productId}`);
       const product = await Product.findById(item.productId);
+      
       if (!product) {
+        console.error(`Product not found for ID: ${item.productId}`);
         return res.status(404).json({ status: 'error', message: `Product not found: ${item.productId}` });
       }
+      
+      console.log(`Found product: ${product.title}, Price: ${product.price}, Stock: ${product.stock}`);
 
       if (product.stock < item.quantity) {
+        console.log(`Stock check failed for ${product.title}.`);
         return res.status(400).json({ status: 'error', message: `Not enough stock for ${product.name}. Only ${product.stock} left.` });
       }
 
       const itemPrice = product.price * item.quantity;
       totalAmount += itemPrice;
+      console.log(`Item price: ${itemPrice}, New totalAmount: ${totalAmount}`);
 
       items.push({
         product: product._id,
@@ -81,6 +93,7 @@ exports.createOrder = async (req, res) => {
       await product.save();
     }
 
+    console.log(`Final totalAmount before saving order: ${totalAmount}`);
     const order = new Order({
       user: req.user.id,
       items,
@@ -89,11 +102,14 @@ exports.createOrder = async (req, res) => {
     });
 
     const createdOrder = await order.save();
+    console.log('--- Order Created Successfully ---');
     res.status(201).json({
       status: 'success',
       data: { order: createdOrder },
     });
   } catch (error) {
+    console.error('--- Error During Order Creation ---');
+    console.error(error);
     res.status(500).json({ status: 'error', message: `Server Error: ${error.message}` });
   }
 }; 
