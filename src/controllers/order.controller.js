@@ -77,10 +77,12 @@ exports.createOrder = async (req, res) => {
         return res.status(400).json({ status: 'error', message: `Not enough stock for ${product.name}. Only ${product.stock} left.` });
       }
 
-      const finalPrice = product.price * (1 - product.discountPercentage / 100);
+      // Calculate the final price for a single unit and round it to 2 decimal places immediately.
+      const finalPrice = Math.round((product.price * (1 - product.discountPercentage / 100)) * 100) / 100;
+
       const itemTotalPrice = finalPrice * item.quantity;
       totalAmount += itemTotalPrice;
-      console.log(`Item final price: ${finalPrice}, Item total: ${itemTotalPrice}, New totalAmount: ${totalAmount}`);
+      console.log(`Item: ${product.title}, Rounded Unit Price: ${finalPrice}, Item Total: ${itemTotalPrice}, New totalAmount: ${totalAmount}`);
 
       items.push({
         product: product._id,
@@ -88,7 +90,7 @@ exports.createOrder = async (req, res) => {
         quantity: item.quantity,
         price: product.price,
         discountPercentage: product.discountPercentage,
-        finalPrice: finalPrice,
+        finalPrice: finalPrice, // Use the rounded final price
         imageUrl: product.imageUrl,
       });
 
@@ -96,8 +98,9 @@ exports.createOrder = async (req, res) => {
       await product.save();
     }
 
-    // Round the final total amount to 2 decimal places to avoid floating point issues
+    // Although each item is rounded, we round the total as a final safeguard against any floating point representation issues.
     const roundedTotalAmount = Math.round(totalAmount * 100) / 100;
+    console.log(`Final totalAmount before saving: ${totalAmount}, Rounded totalAmount: ${roundedTotalAmount}`);
 
     const order = new Order({
       user: req.user.id,
