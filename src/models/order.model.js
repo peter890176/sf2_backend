@@ -9,6 +9,8 @@ const orderItemSchema = new mongoose.Schema({
   name: { type: String, required: true },
   quantity: { type: Number, required: true, min: 1 },
   price: { type: Number, required: true },
+  discountPercentage: { type: Number, required: true, default: 0 },
+  finalPrice: { type: Number, required: true },
   imageUrl: { type: String, required: true },
 });
 

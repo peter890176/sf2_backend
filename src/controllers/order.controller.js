@@ -77,15 +77,18 @@ exports.createOrder = async (req, res) => {
         return res.status(400).json({ status: 'error', message: `Not enough stock for ${product.name}. Only ${product.stock} left.` });
       }
 
-      const itemPrice = product.price * item.quantity;
-      totalAmount += itemPrice;
-      console.log(`Item price: ${itemPrice}, New totalAmount: ${totalAmount}`);
+      const finalPrice = product.price * (1 - product.discountPercentage / 100);
+      const itemTotalPrice = finalPrice * item.quantity;
+      totalAmount += itemTotalPrice;
+      console.log(`Item final price: ${finalPrice}, Item total: ${itemTotalPrice}, New totalAmount: ${totalAmount}`);
 
       items.push({
         product: product._id,
         name: product.title,
         quantity: item.quantity,
         price: product.price,
+        discountPercentage: product.discountPercentage,
+        finalPrice: finalPrice,
         imageUrl: product.imageUrl,
       });
 
