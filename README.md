@@ -4,6 +4,11 @@
 
 This is a comprehensive and robust e-commerce backend API built with Node.js, Express.js, and MongoDB. It provides a full suite of features including user authentication, product management, order processing, and an admin role for system management.
 
+## Live Demo & Frontend
+
+- **Live Demo:** [https://sfshop.netlify.app/](https://sfshop.netlify.app/)
+- **Frontend Repository:** [https://github.com/peter890176/sf2](https://github.com/peter890176/sf2)
+
 ## Features
 
 - **Authentication**: Secure user registration and login using JWT (JSON Web Tokens).
