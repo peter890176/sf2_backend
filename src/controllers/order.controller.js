@@ -7,7 +7,10 @@ const User = require('../models/user.model');
 // @access  Private
 exports.getUserOrders = async (req, res) => {
   try {
-    const orders = await Order.find({ user: req.user.id }).sort({ createdAt: -1 });
+    const orders = await Order.find({ user: req.user.id })
+      .populate('items.product', 'title imageUrl')
+      .sort({ createdAt: -1 });
+
     res.status(200).json({
       status: 'success',
       data: { orders },
