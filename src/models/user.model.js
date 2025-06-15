@@ -24,17 +24,14 @@ const userSchema = new mongoose.Schema({
   },
   firstName: {
     type: String,
-    required: [true, 'First name is required'],
     trim: true
   },
   lastName: {
     type: String,
-    required: [true, 'Last name is required'],
     trim: true
   },
   phone: {
     type: String,
-    required: [true, 'Phone number is required'],
     trim: true
   },
   createdAt: {
