@@ -96,11 +96,13 @@ exports.createOrder = async (req, res) => {
       await product.save();
     }
 
-    console.log(`Final totalAmount before saving order: ${totalAmount}`);
+    // Round the final total amount to 2 decimal places to avoid floating point issues
+    const roundedTotalAmount = Math.round(totalAmount * 100) / 100;
+
     const order = new Order({
       user: req.user.id,
       items,
-      totalAmount,
+      totalAmount: roundedTotalAmount,
       shippingAddress,
     });
 
